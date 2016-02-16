@@ -87,7 +87,6 @@ class Importer(object):
                 if tb.tb_frame.f_globals.get('__name__') == module_name:
                     raise exc_type, exc_value, tb_root
                 tb = tb.tb_next
-                tb = tb.tb_next
 
             if pip_install(module_name) != 0:
                 raise
@@ -101,16 +100,17 @@ custom_importer = Importer()
 __builtin__.__import__ = custom_importer._import
 
 
-if __name__ == '__main__':
-
+def __main__():
     from sys import argv
 
     if len(argv) < 2:
         exit(1)
 
-    argv.pop[0]
-
-    if argv[0].endswith('.py'):
-        m = original_import(argv[1][:-3], globals())
+    if argv[1].endswith('.py'):
+        m = original_import(argv[1][:-3], locals())
         if hasattr(m, '__main__'):
             m.__main__()
+
+
+if __name__ == '__main__':
+    __main__()
